@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 247 246 242; /* ink-50 */
+  --foreground: 28 26 21;   /* ink-900 */
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background: rgb(var(--background));
+  color: rgb(var(--foreground));
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle paper-texture background (zero requests, pure CSS) */
+body {
+  background-image:
+    radial-gradient(circle at 10% 0%, rgba(212, 69, 47, 0.06), transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(61, 138, 99, 0.06), transparent 45%),
+    radial-gradient(circle at 50% 100%, rgba(120, 80, 40, 0.05), transparent 50%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  letter-spacing: -0.01em;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Result fade-in animation */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-appear {
+  animation: fade-up 0.55s ease-out both;
+}
+
+/* Staggered card entrance delays */
+.result-appear > * + * {
+  animation: fade-up 0.55s ease-out both;
+  animation-delay: 0.08s;
+}
+.result-appear > * + * + * {
+  animation-delay: 0.16s;
+}
+.result-appear > * + * + * + * {
+  animation-delay: 0.24s;
+}

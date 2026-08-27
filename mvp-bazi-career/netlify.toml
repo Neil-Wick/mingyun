@@ -1,0 +1,44 @@
+# Netlify configuration for BaZi Career MVP
+
+[build]
+  # Build command and output match Next.js static export output
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  # Netlify runs on Node 20 LTS by default — be explicit
+  NODE_VERSION = "20"
+
+# Next.js static export already serves /foo/index.html on /foo via pretty URLs
+[build.processing.html]
+  pretty_urls = true
+
+# All API routes go to Netlify Functions; this keeps the static export flow
+# while letting us run real server-side code for analytics/country detection.
+# Note: Functions directory default = netlify/functions (the folder we use).
+[functions]
+  directory = "netlify/functions"
+  # ES module TS support (default modern Node runtime on Netlify works great)
+  node_bundler = "esbuild"
+
+# Security: Don't allow the function directory to be served as static assets
+# (redundant, Netlify already hides it, but explicit is safer.)
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+
+# SPA fallback: any unmatched path → /index.html (since this is 100% client side)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Custom headers — Plausible and /api/events must be reachable cross-origin
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type"
+    Access-Control-Allow-Methods = "POST, OPTIONS"
+    Cache-Control = "no-store"
